@@ -30,12 +30,3 @@ def gaussian_prop(datas,mu,sigma):
     sigma_ = np.linalg.inv(sigma)
     coff1 = np.exp(np.sum(-0.5*np.matmul((datas-mu),sigma_) * (datas-mu),axis=1))
     return coff0 * coff1
-if __name__ == '__main__':
-    # get_data()
-    # print(get_para(np.array([[1.0,2.0,3.0],[5.0,8.0,9.0],[2.0,2.0,4.0]])))
-    a = np.array([[1,2,3]
-                  ,[2,3,4]])
-    b = np.array([[1,0,1]
-                  ,[2,1,1]])
-    print(np.sum(a*b,axis=1))
-    
