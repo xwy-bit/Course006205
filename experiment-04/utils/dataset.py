@@ -67,10 +67,11 @@ def gmm_em(Y, K, iters):
 
     X = Y
     N, D = X.shape
+    
     #Init
-    alpha = np.ones((K,1)) / K          #initially evenly distributed
+    alpha = np.ones((K,1)) / K         
     mu = kmeans.cluster_centers_
-    cov = np.array([np.eye(D)] * K)     #intially diagonal covariance
+    cov = np.array([np.eye(D)] * K)    
 
     omega = np.zeros((N, K))
 
@@ -84,15 +85,15 @@ def gmm_em(Y, K, iters):
         omega = p / sumP[:, None]
 
         #M-Step
-        sumOmega = np.sum(omega, axis=0)  # SHAPE[K]
-        alpha = sumOmega / N              # alpha_k = sum(omega_k) / N
+        omega_sum = np.sum(omega, axis=0) 
+        alpha = omega_sum / N          
         for k in range(K):
-            omegaX = np.multiply(X, omega[:, [k]])        # omega_k*X [N*D]
-            mu[k] = np.sum(omegaX, axis=0) / sumOmega[k]  # mu[k]  = sum(omega_k*X) / sum(omega_k) : [D]
+            omegaX = X * omega[:, [k]]  
+            mu[k] = np.sum(omegaX, axis=0) / omega_sum[k]  
 
-            X_mu_k = np.subtract(X, mu[k])                                         # (X - mu_k) : [N*D] - [D] = [N*D]
-            omega_X_mu_k = np.multiply(omega[:, [k]], X_mu_k)                      # omega(X-mu_k) : [N*D]
-            cov[k] = np.dot(np.transpose(omega_X_mu_k), X_mu_k) / sumOmega[k]      # sum(omega_i * (X_i-mu_k).T*(X_i-mu_k))  [D*D]
+            X_mu_k = X- mu[k]                                 
+            omega_X_mu_k =omega[:, [k]] * X_mu_k                    
+            cov[k] = np.dot(np.transpose(omega_X_mu_k), X_mu_k) / omega_sum[k]     
     return omega, alpha, mu, cov
 
 
