@@ -60,9 +60,9 @@ def gaussian(X, mu_k, cov_k):
 def gmm_em(Y, K, iters):
     kmeans = KMeans(
         n_clusters=K,
-        init='k-means++',
-        n_init=10,
-        max_iter=300)
+        init='random',
+        n_init=1,
+        max_iter=1)
     kmeans.fit(Y)
 
     X = Y
